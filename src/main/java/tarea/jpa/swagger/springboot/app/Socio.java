@@ -41,12 +41,7 @@ public class Socio {
 	
 	@OneToMany(mappedBy = "socio")
 	private Set<Barco> barcos;	
-
-	@Column(name="contrasena_socio", nullable=false, length=50)
-	private String contrasena;
-	
-	private String token;
-		
+			
 	public Socio() {
 		
 	}
@@ -59,7 +54,6 @@ public class Socio {
 		this.apellido2Socio = apellido2Socio;
 		this.telefonoSocio = telefonoSocio;
 		this.emailSocio = emailSocio;
-		this.contrasena = contrasena;
 		this.barcos = new HashSet<Barco>(); 
 	}
 	
@@ -120,22 +114,6 @@ public class Socio {
 	}
 	
 	
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-	
-	public String getContrasena() {
-		return contrasena;
-	}
-
-	public void setContrasena(String contrasena) {
-		this.contrasena = contrasena;
-	}
-
 	@Override
 	public String toString() {
 		return "Socio [idSocio=" + idSocio + ", dniSocio=" + dniSocio + ", nombreSocio=" + nombreSocio

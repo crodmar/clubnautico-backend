@@ -44,27 +44,7 @@ public class SocioController {
 		return nuevoSocio;
 	}
 	
-	//Token
-	@PostMapping("/login")
-	public Socio login(String dni, String contrasena) {
-
-		GestorPersistencia gp = new GestorPersistencia();
-		Socio socio = gp.getSocioDni(dni);
-		if (socio != null) {
-			
-			if(socio.getContrasena() == contrasena) {
-				String token = getJWTToken(dni);				
-				socio.setToken(token);
-				return socio;
-			} else {
-				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Contraseña incorrecta");
-			}
-						
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Socio no encontrado");
-		}
-			
-	}
+	
 	
 	@Operation(summary = "Devuelve un socio según su ID")
 	@GetMapping("/obtener/{id}")
@@ -111,24 +91,4 @@ public class SocioController {
 		
 	}
 	
-	private String getJWTToken(String dni) {
-		String secretKey = "mySecretKey";
-		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-				.commaSeparatedStringToAuthorityList("ROLE_USER");
-		
-		String token = Jwts
-				.builder()
-				.setId("softtekJWT")
-				.setSubject(dni)
-				.claim("authorities",
-						grantedAuthorities.stream()
-								.map(GrantedAuthority::getAuthority)
-								.collect(Collectors.toList()))
-				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 600000))
-				.signWith(SignatureAlgorithm.HS512,
-						secretKey.getBytes()).compact();
-
-		return "Bearer " + token;
-	}
 }

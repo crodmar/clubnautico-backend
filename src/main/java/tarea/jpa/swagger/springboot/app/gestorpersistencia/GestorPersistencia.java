@@ -13,6 +13,7 @@ import tarea.jpa.swagger.springboot.app.Barco;
 import tarea.jpa.swagger.springboot.app.Patron;
 import tarea.jpa.swagger.springboot.app.Salida;
 import tarea.jpa.swagger.springboot.app.Socio;
+import tarea.jpa.swagger.springboot.app.Usuario;
 
 public class GestorPersistencia {
 	EntityManagerFactory fabrica;	;
@@ -187,6 +188,17 @@ public class GestorPersistencia {
 				.setParameter("destinoElegido", destino).getResultList();
 		em.close();
 		return salidas;
+	}
+	
+	
+	//Métodos de usuario
+	public Usuario getUsuarioEmail(String email) {
+		EntityManager em = this.fabrica.createEntityManager();
+		@SuppressWarnings("unchecked")
+		Usuario usuario = (Usuario) em.createQuery("SELECT u FROM Usuario u WHERE u.email = :emailUsuario")//clase y atributo en java
+				.setParameter("emailUsuario", email).getSingleResult();
+		em.close();
+		return usuario;
 	}
 	
 	
