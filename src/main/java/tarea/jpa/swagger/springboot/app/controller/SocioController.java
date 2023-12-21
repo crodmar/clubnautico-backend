@@ -91,18 +91,16 @@ public class SocioController {
 	
 	
 	@Operation(summary = "Modifica un socio según su ID")
-	@PutMapping("/actualizar/{id}")
-	public Socio editarSocio(@PathVariable("id") int id, String dni, String nombre,
-							String ap1, String ap2, int telefono, String email) {
+	@PutMapping("/editar/{id}")
+	public Socio editarSocio(@PathVariable("id") int id, @RequestBody Socio socio) {
 		GestorPersistencia gp = new GestorPersistencia();
-		Socio nuevoSocio = new Socio(dni, nombre, ap1, ap2, telefono, email);
-		nuevoSocio.setIdSocio(id);
 		Socio socioBD = gp.getSocioId(id);
 		if (socioBD == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Socio no encontrado");
 		}
-		gp.actualizar(nuevoSocio);
-		return nuevoSocio;
+		gp.actualizar(socio);
+		return socio;
+		
 		
 	}
 	
