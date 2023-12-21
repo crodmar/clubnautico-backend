@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import tarea.jpa.swagger.springboot.app.Socio;
 import tarea.jpa.swagger.springboot.app.Usuario;
 import tarea.jpa.swagger.springboot.app.gestorpersistencia.GestorPersistencia;
+import tarea.jpa.swagger.springboot.app.security.JWTAuthorizationFilter;
 
 @RestController()
 public class UsuarioController {
@@ -53,7 +54,7 @@ public class UsuarioController {
 	}
 	
 	private String getJWTToken(String dni) {
-		String secretKey = "tFKMnCBLXb57DFOscYtV6NcAq8WCJZFktFKMnCBLXb57DFOscYtV6NcAq8WCJZFk";
+		String secretKey = JWTAuthorizationFilter.SECRET;
 		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
 				.commaSeparatedStringToAuthorityList("ROLE_USER");
 		
@@ -66,7 +67,7 @@ public class UsuarioController {
 								.map(GrantedAuthority::getAuthority)
 								.collect(Collectors.toList()))
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 600000))
+				.setExpiration(new Date(System.currentTimeMillis() + 600000000))
 				.signWith(SignatureAlgorithm.HS512,
 						secretKey.getBytes()).compact();
 

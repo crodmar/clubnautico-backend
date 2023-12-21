@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,7 +29,7 @@ import tarea.jpa.swagger.springboot.app.gestorpersistencia.GestorPersistencia;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-@RestController("/api/socio/")
+@RestController()
 public class SocioController {
 	
 	private ArrayList<Socio> socios = new ArrayList<Socio>();
@@ -36,12 +37,11 @@ public class SocioController {
 	@Operation(summary = "Crea un socio")
 	@PostMapping("/crear")
 	@ResponseStatus(value = HttpStatus.CREATED)//Para devolver 201 cuando añade
-	public Socio crearSocio(String dni, String nombre, String ap1, String ap2, int telefono, String email, String contrasena) {
+	public Socio crearSocio(@RequestBody Socio socio) {
 		GestorPersistencia gp = new GestorPersistencia();
-		Socio nuevoSocio = new Socio(dni, nombre, ap1, ap2, telefono, email, contrasena);
-		socios.add(nuevoSocio);
-		gp.insertar(nuevoSocio);
-		return nuevoSocio;
+		socios.add(socio);
+		gp.insertar(socio);
+		return socio;
 	}
 	
 	
@@ -53,6 +53,21 @@ public class SocioController {
 		Socio socio = gp.getSocioId(id);
 		if (socio != null) {
 			return socio;
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Socio no encontrado");
+		}
+			
+	}	
+	
+	
+	
+	@Operation(summary = "Devuelve todos los socios")
+	@GetMapping("/obtener")
+	public List<Socio> obtenerSocios() {
+		GestorPersistencia gp = new GestorPersistencia();
+		List<Socio> socios = gp.getTodosSocios();
+		if (socios != null) {
+			return socios;
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Socio no encontrado");
 		}
@@ -78,9 +93,9 @@ public class SocioController {
 	@Operation(summary = "Modifica un socio según su ID")
 	@PutMapping("/actualizar/{id}")
 	public Socio editarSocio(@PathVariable("id") int id, String dni, String nombre,
-							String ap1, String ap2, int telefono, String email, String contrasena) {
+							String ap1, String ap2, int telefono, String email) {
 		GestorPersistencia gp = new GestorPersistencia();
-		Socio nuevoSocio = new Socio(dni, nombre, ap1, ap2, telefono, email, contrasena);
+		Socio nuevoSocio = new Socio(dni, nombre, ap1, ap2, telefono, email);
 		nuevoSocio.setIdSocio(id);
 		Socio socioBD = gp.getSocioId(id);
 		if (socioBD == null) {

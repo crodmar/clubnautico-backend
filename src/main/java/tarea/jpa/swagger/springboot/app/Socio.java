@@ -47,7 +47,7 @@ public class Socio {
 	}
 	
 	public Socio(String dniSocio, String nombreSocio, String apellido1Socio, String apellido2Socio,
-			int telefonoSocio, String emailSocio, String contrasena) {
+			int telefonoSocio, String emailSocio) {
 		this.dniSocio = dniSocio;
 		this.nombreSocio = nombreSocio;
 		this.apellido1Socio = apellido1Socio;

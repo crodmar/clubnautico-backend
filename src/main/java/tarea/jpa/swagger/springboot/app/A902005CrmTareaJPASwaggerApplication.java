@@ -43,7 +43,6 @@ public class A902005CrmTareaJPASwaggerApplication {
 				.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 			    .authorizeHttpRequests(authorize -> authorize
 			      .requestMatchers(HttpMethod.POST, "/login").permitAll() // TODO: requestMatcher en vez de ant
-			      .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
 				  .anyRequest().authenticated()
 				);
 			return http.build();
@@ -61,33 +60,13 @@ public class A902005CrmTareaJPASwaggerApplication {
 					.exposedHeaders("*")
 					.allowCredentials(true);
 					
-					registry.addMapping("/api/**")
+					registry.addMapping("/**")
 					.allowedOrigins("http://localhost:4200")
 					.allowedMethods("GET", "POST", "PUT", "DELETE")
 					.allowCredentials(true);
 				}
 			};
 		}
-	    /*
-	    @Bean
-		public WebMvcConfigurer corsConfigurer() {
-			return new WebMvcConfigurer() {
-				@Override
-				public void addCorsMappings(CorsRegistry registry) {
-					registry.addMapping("**")
-					.allowedOrigins("http://localhost:4200")
-					.allowedHeaders("POST", "Content-Type","X-Requested-With","accept","Origin",
-							"Access-Control-Request-Method","Access-Control-Request-Headers")
-					.exposedHeaders("Access-Control-Allow-Origin","Access-Control-Allow-Credentials");
-					registry.addMapping("**")
-					.allowedOrigins("http://localhost:4200")
-					.allowedHeaders("GET", "Content-Type","X-Requested-With","accept","Origin",
-							"Access-Control-Request-Method","Access-Control-Request-Headers")
-					.exposedHeaders("Access-Control-Allow-Origin","Access-Control-Allow-Credentials");
-		};
-		};
-
-		}*/
 	         
 	}
 }
